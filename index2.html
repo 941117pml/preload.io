@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表情qq无序加载</title>
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<style>
+		body,p,ul,li{
+			padding: 0px;
+			margin:0px;
+		}
+		.box{
+			margin:150px 0 0 200px;
+			border:1px solid #eee;
+		}
+		body{
+			background-color: #eee;
+		}
+		a{
+			text-decoration: none;
+			display: block;
+		}
+		.panel{
+			width: 600px;
+			display: none;
+		}
+		.list li{
+			list-style: none;
+			display: inline-block;
+			border:1px solid #eee;
+			cursor: pointer;
+		}
+		.list li:hover{
+			border-color: #3f6;
+		}
+		img{
+			width: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<a href="javascript:;" id="face-btn">表情</a>
+		<div class="panel">
+			<p class="loading">表情正在加载中，请稍后.....</p>
+		</div>
+	</div>
+	
+</body>
+<script src="../js/preload.js"></script>
+	<script>
+		var $btn=$('#face-btn');
+		var $panel=$('.panel');
+		var imgs=[];
+		var len=imgs.length;
+		for(var i=0;i<13;i++){
+			imgs[i]='../imgs/qq/'+i+'.gif';
+		}
+		var len=imgs.length;
+		$btn.on('click',function(e){
+			e.stopPropagation();
+			$panel.show();
+
+			$.preload(imgs,{
+				all:function(){
+					var html='';
+					html+='<ul class="list">';
+					for(var i=0;i<len;i++){
+						html+='<li><img src="'+imgs[i]+'" ></li>'
+					}
+					html+='</ul>';
+					setTimeout(function(){
+						$panel.html(html);
+					},1000)
+					
+				}
+			})
+		})
+		$(document).on('click',function(){
+			$panel.hide();
+		})
+	</script>
+</html>
