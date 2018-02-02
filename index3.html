@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>有序加载</title>
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<style>
+		.box{
+			text-align: center;
+		}
+		.btn{
+			display: inline-block;
+			height: 30px;
+			line-height: 30px;
+			border:1px solid #ccc;
+			padding: 0 10px;
+			margin-right: 50px;
+			color: #333;
+		}
+		a{
+			text-decoration: none;
+		}
+		.btn:hover{
+			background-color: #eee;
+		}
+		img{
+			width: 1000px;
+			height: 800px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3473853724,4056419036&fm=27&gp=0.jpg" id="img" width="800px">
+		<p>
+			<a href="javascript:;" class="btn" data-control="prev">上一页</a>
+			<a href="javascript:;" class="btn" data-control="next">下一页</a>
+		</p>
+	</div>
+</body>
+<script src="../js/preload.js"></script>
+	<script>
+		var imgs=[
+		'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3473853724,4056419036&fm=27&gp=0.jpg',
+		'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1792169389,336854983&fm=27&gp=0.jpg',
+		'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1473832971,1663580564&fm=27&gp=0.jpg',
+		'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1330750290,2716097504&fm=27&gp=0.jpg'
+		]
+		var len=imgs.length,
+			// count=0//表明加载到了第几张图片
+			index=0;//当前浏览到了那一页
+		//有序预加载
+		$.preload(imgs,{
+			order:'ordered'
+		});
+		// function load() {
+		// 	var imgObj=new Image();
+
+		// 	$(imgObj).on('load error',function(){
+		// 		if(count>=len){
+		// 			//所有图片加载完毕
+		// 		}else{
+		// 			load();
+		// 		}
+		// 		count++;
+		// 	});
+
+		// 	imgObj.src=imgs[count];
+		// }
+		// load();
+
+		//点击上一页、下一页
+	$('.btn').on('click',function(){
+		if($(this).data('control')==='prev'){
+			index=Math.max(0,--index);
+		}else{
+			index=Math.min(len-1,++index);
+		}
+		document.title=(index+1)+'/'+len;
+		$('#img').attr('src',imgs[index]);
+	})
+	</script>
+</html>
